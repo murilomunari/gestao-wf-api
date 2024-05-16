@@ -5,3 +5,5 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://admin:admin@gestao-webflux-cluster.ycaugpw.mongodb.net/gestao?retryWrites=true&w=majority&appName=gestao-webFlux-cluster
+  webFlux:
+    base-path: /gestao-api
