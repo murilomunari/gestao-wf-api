@@ -1,4 +1,7 @@
 package com.gestao.gestaowfapi.dto;
 
-public record CustomerDTO(String email, String firstName, String lastName, String cpf) {
+import jakarta.validation.constraints.Email;
+import org.hibernate.validator.constraints.br.CPF;
+
+public record CustomerDTO(@Email  String email, String firstName, String lastName, @CPF String cpf) {
 }

@@ -27,4 +27,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.findAll());
     }
 
+    @GetMapping("/acronym")
+    public ResponseEntity<Mono<Product>> findByAcronym(@PathVariable("acronym") String acronym) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findByAcronym(acronym));
+
+    }
 }
