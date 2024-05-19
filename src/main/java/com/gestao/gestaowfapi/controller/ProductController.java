@@ -27,9 +27,21 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.findAll());
     }
 
-    @GetMapping("/acronym")
+    @GetMapping("acronym/{acronym}")
     public ResponseEntity<Mono<Product>> findByAcronym(@PathVariable("acronym") String acronym) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.findByAcronym(acronym));
 
+    }
+
+    @GetMapping("name/{name}")
+    public ResponseEntity<Flux<Product>> findAllByName(@PathVariable("name") String name){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findAllByName(name));
+    }
+
+    @GetMapping("params")
+    public ResponseEntity<Flux<Product>> findAllByParams(@RequestParam(value = "acronym", required = false, defaultValue = "") String acronym,
+                                                         @RequestParam(value = "name", required = false, defaultValue = "") String name,
+                                                         @RequestParam(value = "currentPrice", required = false, defaultValue = "") String currentPrice){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findByParam(acronym, name, currentPrice));
     }
 }
