@@ -8,11 +8,13 @@ import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.awt.print.Pageable;
+
 public interface ProductRepository extends ReactiveMongoRepository<Product, String> {
 
     Mono<Product> findByAcronym(String acronym);
 
 
     @Query("{name:{$regex:\'^ca\', $options:\'i\'}}")
-    Flux<Product> findAllByName(@Param("name") String name);
+    Flux<Product> findAllByName(@Param("name") String name, Pageable pageable);
 }

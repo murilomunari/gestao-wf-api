@@ -34,14 +34,18 @@ public class ProductController {
     }
 
     @GetMapping("name/{name}")
-    public ResponseEntity<Flux<Product>> findAllByName(@PathVariable("name") String name){
-        return ResponseEntity.status(HttpStatus.OK).body(productService.findAllByName(name));
+    public ResponseEntity<Flux<Product>> findAllByName(@PathVariable("name") String name,
+                                                       @RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
+                                                       @RequestParam(value = "name", required = false, defaultValue = "5") int pageSize){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findAllByName(name,pageNumber, pageSize));
     }
 
-    @GetMapping("params")
+    @GetMapping("/params")
     public ResponseEntity<Flux<Product>> findAllByParams(@RequestParam(value = "acronym", required = false, defaultValue = "") String acronym,
                                                          @RequestParam(value = "name", required = false, defaultValue = "") String name,
-                                                         @RequestParam(value = "currentPrice", required = false, defaultValue = "") String currentPrice){
-        return ResponseEntity.status(HttpStatus.OK).body(productService.findByParam(acronym, name, currentPrice));
+                                                         @RequestParam(value = "currentPrice", required = false, defaultValue = "") String currentPrice,
+                                                         @RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
+                                                         @RequestParam(value = "name", required = false, defaultValue = "5") int pageSize){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findByParam(acronym, name, currentPrice, pageNumber, pageSize));
     }
 }

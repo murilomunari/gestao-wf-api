@@ -6,7 +6,8 @@ import com.gestao.gestaowfapi.model.Product;
 import com.gestao.gestaowfapi.repository.ProductRepository;
 import com.gestao.gestaowfapi.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,11 +21,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-
     private final ProductRepository productRepository;
-
     private final ProductMapper productMapper;
-
     private final ReactiveMongoTemplate mongoTemplate;
 
     @Override
@@ -43,30 +41,32 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Flux<Product> findAllByName(String name) {
-        return productRepository.findAllByName(name);
-    }
-
-    @Override
-    public Flux<Product> findByParam(String acronym, String name, String currentPrice) {
-
-        Criteria criteria = new Criteria();
-
-        if (Objects.equals(acronym,"")){
-            criteria.and("acronym").is(acronym);
-        }
-        if (Objects.equals(name,"")){
-            criteria.and("name").regex("^"+name, "i");
-        }
-        if (Objects.equals(name,"")){
-            criteria.and("currentPrice").lte(acronym);
-        }
-
-        Query query = new Query();
-        query.addCriteria(criteria);
+    public Flux<Product> findAllByName(String name, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Query query = new Query().with(pageable);
+        query.addCriteria(Criteria.where("name").is(name));
 
         return mongoTemplate.find(query, Product.class);
     }
 
+    @Override
+    public Flux<Product> findByParam(String acronym, String name, String currentPrice, int pageNumber, int pageSize) {
+        Criteria criteria = new Criteria();
 
+        if (!Objects.equals(acronym, "")) {
+            criteria.and("acronym").is(acronym);
+        }
+        if (!Objects.equals(name, "")) {
+            criteria.and("name").regex("^" + name, "i");
+        }
+        if (!Objects.equals(currentPrice, "")) {
+            criteria.and("currentPrice").lte(Double.parseDouble(currentPrice));
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Query query = new Query().with(pageable);
+        query.addCriteria(criteria);
+
+        return mongoTemplate.find(query, Product.class);
+    }
 }
