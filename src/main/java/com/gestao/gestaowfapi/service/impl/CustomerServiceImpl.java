@@ -1,6 +1,7 @@
 package com.gestao.gestaowfapi.service.impl;
 
 import com.gestao.gestaowfapi.dto.CustomerDTO;
+import com.gestao.gestaowfapi.exception.NotFoundException;
 import com.gestao.gestaowfapi.mapper.CustomerMapper;
 import com.gestao.gestaowfapi.model.Customer;
 import com.gestao.gestaowfapi.repository.CustomerRepository;
@@ -31,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Mono<Customer> findById(String id) {
-        return customerRepository.findById(id).switchIfEmpty(Mono.error(new RuntimeException("Customer not found")));
+        return customerRepository.findById(id).switchIfEmpty(Mono.error(() -> new NotFoundException("Customer not found")));
     }
 
     @Override
