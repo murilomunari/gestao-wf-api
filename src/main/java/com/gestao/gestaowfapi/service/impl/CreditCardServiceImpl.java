@@ -16,17 +16,16 @@ import reactor.core.publisher.Mono;
 public class CreditCardServiceImpl implements CreditCardService {
 
     private final CreditCardRepository creditCardRepository;
-
     private final CreditCardMapper creditCardMapper;
 
     @Override
     public Mono<CreditCard> findByNumber(String number) {
-        return creditCardRepository.findByNumber(number).switchIfEmpty(Mono.error(()-> new NotFoundException("Credit card not found")));
+        return creditCardRepository.findByNumber(number)
+                .switchIfEmpty(Mono.error(() -> new NotFoundException("Credit card not found")));
     }
 
     @Override
     public Mono<CreditCard> create(CreditCardDTO dto, Customer customer) {
-
         CreditCard creditCard = creditCardMapper.toModel(dto);
         creditCard.setCustomer(customer);
         return creditCardRepository.save(creditCard);

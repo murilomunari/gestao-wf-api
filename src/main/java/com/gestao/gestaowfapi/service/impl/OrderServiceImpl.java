@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -40,8 +42,9 @@ public class OrderServiceImpl implements OrderService {
                     }else {
                         order.setOriginalPrice(product.getCurrentPrice());
                     }
-                    order.setProduct(product);
-                    order.setCustomer(customer);
+                    order.setDtRegistedOrder(LocalDateTime.now());
+                    order.setProductId(product);
+                    order.setCustomerId(customer);
                     return orderRepository.save(order);
                 }));
     }

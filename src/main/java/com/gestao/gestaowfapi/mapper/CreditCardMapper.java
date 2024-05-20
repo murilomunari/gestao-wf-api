@@ -11,6 +11,4 @@ public interface CreditCardMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "customer", ignore = true)
     CreditCard toModel(CreditCardDTO dto);
-
-
 }

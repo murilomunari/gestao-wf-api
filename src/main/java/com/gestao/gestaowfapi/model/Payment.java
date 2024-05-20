@@ -1,5 +1,6 @@
 package com.gestao.gestaowfapi.model;
 
+import com.gestao.gestaowfapi.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Payment {
     @Id
     private String id;
 
-    private String status;
+    private PaymentStatus status;
 
     private LocalDateTime dtRegistedPayment;
 
