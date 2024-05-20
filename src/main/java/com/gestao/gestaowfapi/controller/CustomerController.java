@@ -7,10 +7,7 @@ import com.gestao.gestaowfapi.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,12 +18,22 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+
     @PostMapping
-    public ResponseEntity<Mono<Void>> create(@RequestBody CustomerDTO customerDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(customerDTO).then());
+    public ResponseEntity<Mono<Void>> create(@RequestBody CustomerDTO customerDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(customerDto).then());
     }
 
-    public ResponseEntity<Flux<Customer>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.findAll());
+    @GetMapping
+    public ResponseEntity<Flux<Customer>> findAll(
+            @RequestParam(value = "firstName",required = false, defaultValue = "") String firstName,
+            @RequestParam(value = "email",required = false, defaultValue = "") String email,
+            @RequestParam(value = "cpf",required = false, defaultValue = "") String cpf,
+            @RequestParam(value = "pageNumber",required = false, defaultValue = "0") int pageNumber,
+            @RequestParam(value = "pageSize",required = false, defaultValue = "5") int pageSize,
+            @RequestParam(value = "sort",required = false, defaultValue = "asc") String order
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.findAll(firstName, email, cpf, pageNumber, pageSize, order));
+
     }
 }

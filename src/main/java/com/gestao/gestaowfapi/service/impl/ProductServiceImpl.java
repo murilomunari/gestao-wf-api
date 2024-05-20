@@ -8,6 +8,7 @@ import com.gestao.gestaowfapi.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -63,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
             criteria.and("currentPrice").lte(Double.parseDouble(currentPrice));
         }
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name").descending());
         Query query = new Query().with(pageable);
         query.addCriteria(criteria);
 
