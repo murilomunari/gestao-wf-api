@@ -37,6 +37,8 @@ public class OrderServiceImpl implements OrderService {
                             return Mono.error(()-> new BadRequestException("Discount can not be greater than currentPrice"));
                         }
                         order.setOriginalPrice(product.getCurrentPrice().subtract(orderDTO.discount()));
+                    }else {
+                        order.setOriginalPrice(product.getCurrentPrice());
                     }
                     order.setProduct(product);
                     order.setCustomer(customer);

@@ -6,6 +6,7 @@ import com.gestao.gestaowfapi.model.Customer;
 import com.gestao.gestaowfapi.model.Order;
 import com.gestao.gestaowfapi.service.CustomerService;
 import com.gestao.gestaowfapi.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class OrderController {
 
 
     @PostMapping
-    public ResponseEntity<Mono<Order>> create(@RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<Mono<Order>> create(@Valid @RequestBody OrderDTO orderDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.create(orderDTO));
     }
 
