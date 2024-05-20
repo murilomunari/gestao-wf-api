@@ -33,5 +33,6 @@ public class Product {
     @NotNull
     private BigDecimal currentPrice;
 
+    @Builder.Default
     private LocalDateTime dtCreation = LocalDateTime.now();
 }
