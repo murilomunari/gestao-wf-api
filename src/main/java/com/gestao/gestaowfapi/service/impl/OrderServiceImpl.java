@@ -43,8 +43,8 @@ public class OrderServiceImpl implements OrderService {
                         order.setOriginalPrice(product.getCurrentPrice());
                     }
                     order.setDtRegistedOrder(LocalDateTime.now());
-                    order.setProductId(product);
-                    order.setCustomerId(customer);
+                    order.setProductId(product.getId());
+                    order.setCustomerId(customer.getId());
                     return orderRepository.save(order);
                 }));
     }

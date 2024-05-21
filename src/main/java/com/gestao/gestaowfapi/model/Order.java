@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Builder
-
 public class Order {
 
     @Id
@@ -23,12 +23,9 @@ public class Order {
 
     private BigDecimal discount;
 
-    @Builder.Default
-    private LocalDateTime dtRegistedOrder = LocalDateTime.now();
+    private LocalDateTime dtRegistedOrder;
 
-    @DBRef
-    private Customer customerId;
+    private String customerId;
 
-    @DBRef
-    private Product productId;
+    private String productId;
 }
