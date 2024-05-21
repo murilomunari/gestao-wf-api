@@ -20,8 +20,8 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/credit-card")
-    public ResponseEntity<Mono<Payment>> create(@Valid @RequestBody PaymentDTO paymentDTO){
-        return ResponseEntity.ok().body(paymentService.process(paymentDTO));
+    public ResponseEntity<Mono<Payment>> create(@Valid  @RequestBody PaymentDTO paymentDto) {
+        return ResponseEntity.ok().body(paymentService.process(paymentDto));
     }
 
 }

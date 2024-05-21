@@ -9,5 +9,6 @@ public interface CreditCardService {
 
     Mono<CreditCard> findByNumber(String number);
 
-    Mono<CreditCard> create(CreditCardDTO dto, Customer customer);
+    Mono<CreditCard> create(CreditCardDTO creditCardDto, Customer customer);
+
 }

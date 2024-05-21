@@ -22,31 +22,36 @@ import java.time.LocalDateTime;
 public class PaymentServiceImpl implements PaymentService {
 
     private final CustomerService customerService;
+
     private final OrderService orderService;
+
     private final CreditCardService creditCardService;
+
     private final PaymentRepository paymentRepository;
 
     @Override
     public Mono<Payment> process(PaymentDTO paymentDto) {
         Mono<Customer> customerMono = customerService.findById(paymentDto.customerId());
         Mono<Order> orderMono = orderService.findById(paymentDto.orderId());
-        return Mono.zip(customerMono, orderMono)
-                .flatMap(tuple -> {
-                    Customer customer = tuple.getT1();
-                    Order order = tuple.getT2();
-                    return creditCardService.findByNumber(paymentDto.creditCard().number())
-                            .flatMap(creditCard -> authorizePayment(customer, order, creditCard))
-                            .onErrorResume(error -> authorizePaymentWithNewCreditCard(paymentDto, customer, order));
-                });
+        return Mono.zip(customerMono, orderMono, (customer, order) ->
+                creditCardService.findByNumber(paymentDto.creditCard().number())
+                        .flatMap(creditCard ->
+                                authorizePayment(customer, order, creditCard)
+                        ).onErrorResume(error ->
+                                authorizePaymentWithNewCreditCard(paymentDto, customer, order)
+                        )
+        ).flatMap(paymentMono -> paymentMono);
     }
 
     private Mono<Payment> authorizePaymentWithNewCreditCard(PaymentDTO paymentDto, Customer customer, Order order) {
         return creditCardService.create(paymentDto.creditCard(), customer)
-                .flatMap(creditCard -> savePayment(customer, order, creditCard, PaymentStatus.APPROVED));
+                .flatMap(creditCard ->
+                        savePayment(customer, order, creditCard, PaymentStatus.APPROVED)
+                );
     }
 
     private Mono<Payment> authorizePayment(Customer customer, Order order, CreditCard creditCard) {
-        if (creditCard.getCustomer().getId().equals(customer.getId())
+        if (creditCard.getCustomerId().equals(customer.getId())
                 || creditCard.getDocumentNumber().equals(customer.getCpf())) {
             return savePayment(customer, order, creditCard, PaymentStatus.APPROVED);
         } else {
@@ -55,13 +60,13 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private Mono<Payment> savePayment(Customer customer, Order order, CreditCard creditCard, PaymentStatus status) {
-        Payment payment = Payment.builder()
+        var paymentBuilder = Payment.builder();
+        paymentBuilder
                 .dtRegistedPayment(LocalDateTime.now())
-                .order(order)
-                .customer(customer)
-                .creditCard(creditCard)
-                .status(status)
-                .build();
-        return paymentRepository.save(payment);
+                .orderId(order.getId())
+                .customerId(customer.getId())
+                .creditCardId(creditCard.getId())
+                .status(status);
+        return paymentRepository.save(paymentBuilder.build());
     }
 }

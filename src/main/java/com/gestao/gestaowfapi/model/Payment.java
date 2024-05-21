@@ -25,12 +25,9 @@ public class Payment {
 
     private LocalDateTime dtRegistedPayment;
 
-    @DBRef
-    private CreditCard creditCard;
+    private String creditCardId;
 
-    @DBRef
-    private Order order;
+    private String orderId;
 
-    @DBRef
-    private Customer customer;
+    private String customerId;
 }

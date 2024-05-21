@@ -9,7 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("credit_cards")
+
+@Document("credit-cards")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -30,6 +31,5 @@ public class CreditCard {
 
     private int installments;
 
-    @DBRef
-    private Customer customer;
+    private String customerId;
 }
