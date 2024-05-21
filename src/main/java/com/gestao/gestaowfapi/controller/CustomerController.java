@@ -4,6 +4,7 @@ import com.gestao.gestaowfapi.dto.CustomerDTO;
 import com.gestao.gestaowfapi.model.Customer;
 import com.gestao.gestaowfapi.repository.CustomerRepository;
 import com.gestao.gestaowfapi.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class CustomerController {
 
 
     @PostMapping
-    public ResponseEntity<Mono<Customer>> create(@RequestBody CustomerDTO customerDto) {
+    public ResponseEntity<Mono<Customer>> create(@Valid @RequestBody CustomerDTO customerDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(customerDto));
     }
 
