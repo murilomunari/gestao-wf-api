@@ -36,7 +36,7 @@ class CustomerControllerTest {
     @Test
     void shouldReturnOnlyOneCustomerFilterByCPF() throws JsonProcessingException {
         Customer customer = new Customer();
-        customer.setId("123456");
+        customer.setId(123456);
         customer.setCpf("00000000000");
 
         when(customerService.findAll("", "", "00000000000", 0, 1, "asc"))
@@ -59,7 +59,7 @@ class CustomerControllerTest {
     @Test
     void shouldSaveNewCustomer() throws JsonProcessingException {
         Customer customerSaved = new Customer();
-        customerSaved.setId("123456");
+        customerSaved.setId(123456);
         customerSaved.setFirstName("Murilo");
         customerSaved.setLastName("Munari");
         customerSaved.setEmail("mu_bissiato@hotmail.com");

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.hibernate.validator.constraints.br.CPF;
 
 @Data
@@ -19,7 +20,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Geração automática do ID
-    private Long id;
+    private String id;
 
     @Email
     @Column(unique = true) // Define a coluna como única no banco de dados
