@@ -1,16 +1,14 @@
 package com.gestao.gestaowfapi.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-
-@Document("credit-cards")
+@Entity
+@Table(name = "credit_cards")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -18,18 +16,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class CreditCard {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank
+    @Column(nullable = false)
     private String number;
 
     private String cvv;
 
     private int year;
 
+    @Column(name = "document_number")
     private String documentNumber;
 
     private int installments;
 
+    @Column(name = "customer_id")
     private String customerId;
 }

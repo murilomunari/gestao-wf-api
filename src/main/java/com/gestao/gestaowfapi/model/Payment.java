@@ -1,17 +1,16 @@
 package com.gestao.gestaowfapi.model;
 
 import com.gestao.gestaowfapi.enums.PaymentStatus;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document("payments")
+@Entity
+@Table(name = "payments")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -19,15 +18,23 @@ import java.time.LocalDateTime;
 public class Payment {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private PaymentStatus status;
 
+    @Column(name = "dt_registered_payment", nullable = false)
     private LocalDateTime dtRegistedPayment;
 
-    private String creditCardId;
+    @ManyToOne
+    @JoinColumn(name = "credit_card_id", nullable = false)
+    private CreditCard creditCard;
 
-    private String orderId;
-
-    private String customerId;
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 }
+
+

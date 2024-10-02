@@ -60,9 +60,9 @@ class CustomerControllerTest {
     void shouldSaveNewCustomer() throws JsonProcessingException {
         Customer customerSaved = new Customer();
         customerSaved.setId("123456");
-        customerSaved.setFirstName("Cecilia");
+        customerSaved.setFirstName("Murilo");
         customerSaved.setLastName("Munari");
-        customerSaved.setEmail("ceciliam.bissiato@gmail.com");
+        customerSaved.setEmail("mu_bissiato@hotmail.com");
         customerSaved.setCpf("51344577865");
 
         CustomerDTO customerRequest = new CustomerDTO(

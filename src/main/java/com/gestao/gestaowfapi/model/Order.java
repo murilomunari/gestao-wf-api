@@ -1,15 +1,12 @@
 package com.gestao.gestaowfapi.model;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Document("orders")
+@Entity
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -17,15 +14,22 @@ import java.time.LocalDateTime;
 public class Order {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "original_price", nullable = false)
     private BigDecimal originalPrice;
 
     private BigDecimal discount;
 
+    @Column(name = "dt_registered_order", nullable = false)
     private LocalDateTime dtRegistedOrder;
 
-    private String customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
-    private String productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 }
